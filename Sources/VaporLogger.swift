@@ -1,7 +1,7 @@
 import Foundation
 import HTTP
 
-public class VaporLogger {
+public class VaporLogger: Middleware {
 	public init () {
 
 	}
