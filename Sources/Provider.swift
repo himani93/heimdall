@@ -1,17 +1,17 @@
 import Vapor
 
-public final class VaporLoggerProvider: Vapor.Provider {
+public final class Provider: Vapor.Provider {
     public let provided: Providable
 
     public func beforeRun(_: Vapor.Droplet) {
         // drop.console.info("message from beforeRun")
     }
      public init(config: Config) throws {
-        provided = Providable(middleware: ["logger": VaporLogger()])
+        provided = Providable(middleware: ["logger": Logger()])
     }
 
     public init() {
-        provided = Providable(middleware: ["logger": VaporLogger()])
+        provided = Providable(middleware: ["logger": Logger()])
     }
     public func afterInit(_ drop: Droplet) {
         // drop.console.info("message from afterInit")
@@ -23,10 +23,3 @@ public final class VaporLoggerProvider: Vapor.Provider {
 
 
 }
-
-/**
-To use
-let drop = Droplet(initializedProviders: [VaporLoggerProvider()])
-let drop = Droplet(providers: [VaporLoggerProvider.self])
-
-**/
