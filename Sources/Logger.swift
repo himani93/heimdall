@@ -6,7 +6,7 @@ public class Logger: Middleware {
 
 	}
 	public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
-    	print("\(request)")
-	    return try next.respond(to: request)
+		try request.description.write(toFile: "default_logs.txt", atomically: true, encoding: String.Encoding.utf8)
+		return try next.respond(to: request)
 	}
 }
