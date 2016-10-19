@@ -1,4 +1,4 @@
-Logger for (Vapor)[http://github.com/vapor/vapor]
+Logger for [Vapor](http://github.com/vapor/vapor)
 --
 
 Logs all request to ```default_logs.txt``` file created in current working directory
