@@ -18,7 +18,8 @@ public class Logger: Middleware {
 
 	public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
 		let file = "default_logs.txt"
-		saveToFile(toFile: file, content: request.description)
+		var content = "\(request.peerAddress!.address())    \(Date().rfc1123)    \(request.method)    \(request.uri)    \(request.headers)"
+		saveToFile(toFile: file, content: content)
 		return try next.respond(to: request)
 	}
 
