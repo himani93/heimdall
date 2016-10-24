@@ -18,7 +18,7 @@ public class Logger: Middleware {
 
 	public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
 		let file = "default_logs.txt"
-		var content = "\(request.peerAddress!.address())    \(Date().rfc1123)    \(request.method)    \(request.uri)    \(request.headers)"
+		var content = "\(request.peerAddress!.address())\t\(Date().rfc1123)\t\(request.method)\t\(request.uri)\t\(request.headers)"
 		saveToFile(toFile: file, content: content)
 		return try next.respond(to: request)
 	}
@@ -27,7 +27,8 @@ public class Logger: Middleware {
 		do {
 			if fileManager.fileExists(atPath: toFile) == false {
 				// create new file
-				try (content+"\n").write(toFile: toFile, atomically: true, encoding: .utf8)
+				let header = "REMOTE IP ADDRESS\tDATETIME\tREQUEST METHOD\tREQUEST URI\tREQUEST HEADERS"
+				try (header + "\n" + content + "\n").write(toFile: toFile, atomically: true, encoding: .utf8)
 			} else {
 				// append to file
 				if fileHandle == nil {
@@ -35,7 +36,7 @@ public class Logger: Middleware {
 				}
 				if let fileHandle = fileHandle {
 					let _ = fileHandle.seekToEndOfFile()
-					if let data = (content + "\n").data(using: String.Encoding.utf8) {
+					if let data = (content+"\n").data(using: String.Encoding.utf8) {
 						fileHandle.write(data)
 					}
 				}
