@@ -2,11 +2,16 @@ import Foundation
 import HTTP
 
 public class Logger: Middleware {
+	let file = "logs.txt"
 	let fileManager =  FileManager()
 	var fileHandle: FileHandle? = nil
 
-	public init () {
+	public init() {
 
+	}
+
+	public init(logFile: String) {
+		self.file = logFile
 	}
 
 	deinit {
@@ -17,7 +22,6 @@ public class Logger: Middleware {
 	}
 
 	public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
-		let file = "default_logs.txt"
 		var content = "\(request.peerAddress!.address())\t\(Date().rfc1123)\t\(request.method)\t\(request.uri)\t\(request.headers)"
 		saveToFile(toFile: file, content: content)
 		return try next.respond(to: request)
@@ -43,6 +47,7 @@ public class Logger: Middleware {
 			}
 			return true
 		} catch {
+			// Print to console that logger unable to write to file with reason
 			print("Request cannot be written to file.")
 			return false
 		}
