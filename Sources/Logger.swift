@@ -2,7 +2,7 @@ import Foundation
 import HTTP
 
 public class Logger: Middleware {
-	let file = "logs.txt"
+	var file = "logs.txt"
 	let fileManager =  FileManager()
 	var fileHandle: FileHandle? = nil
 
