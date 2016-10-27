@@ -18,19 +18,6 @@ let drop = Droplet(providers: [Heimdall.Provider.self])
 drop.run()
 ```
 
-If you want to save logs to a different location, just initialise the provider with a path.
-
-```
-import Vapor
-import HTTP
-import Heimdall
-
-let loggerProvider = Heimdall.Provider(logFile: "/path/to/logfile.text")
-let drop = Droplet(providers: [loggerProvider])
-
-drop.run()
-```
-
 Heimdall writes the logs to file in the following format. It generates a tab separated file which can easily be opened in spread sheet software.
 
 | REMOTE IP ADDRESS |	DATETIME |	REQUEST METHOD |	REQUEST URI |	REQUEST HEADERS |

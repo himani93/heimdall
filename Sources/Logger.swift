@@ -10,10 +10,6 @@ public class Logger: Middleware {
 
 	}
 
-	public init(logFile: String) {
-		self.file = logFile
-	}
-
 	deinit {
 		// close file handle if set
 		if let fileHandle = fileHandle {
