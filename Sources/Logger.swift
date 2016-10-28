@@ -10,6 +10,10 @@ public class Logger: Middleware {
 
 	}
 
+	public init(logFile: String) {
+		self.file = logFile
+	}
+
 	deinit {
 		// close file handle if set
 		if let fileHandle = fileHandle {
@@ -42,9 +46,9 @@ public class Logger: Middleware {
 				}
 			}
 			return true
-		} catch {
+		} catch let error as NSError {
 			// Print to console that logger unable to write to file with reason
-			print("Request cannot be written to file.")
+			print(error.localizedDescription)
 			return false
 		}
 	}
