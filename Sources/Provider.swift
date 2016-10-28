@@ -14,10 +14,6 @@ public final class Provider: Vapor.Provider {
         provided = Providable(middleware: ["logger": Logger()])
     }
 
-    public init(logFile: String) {
-        provided = Providable(middleware: ["logger": Logger(logFile: logFile)])
-    }
-
     public func afterInit(_ drop: Droplet) {
     }
 
