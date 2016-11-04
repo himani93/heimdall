@@ -5,9 +5,13 @@ public class Logger: Middleware {
 	var file = "logs.txt"
 	let fileManager =  FileManager()
 	var fileHandle: FileHandle? = nil
+	var format: String
 
-	public init() {
-
+	public init(format: String) {
+		self.format = format
+	}
+	public convenience init() {
+		self.init(format: "combined")
 	}
 
 	deinit {
@@ -18,9 +22,37 @@ public class Logger: Middleware {
 	}
 
 	public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
-		var content = "\(request.peerAddress!.address())\t\(Date().rfc1123)\t\(request.method)\t\(request.uri)\t\(request.headers)"
+		let requestInTime = Date()
+		let remoteAddr = request.peerAddress!.address()
+		let method = request.method
+		let url = request.uri
+		// let headers = request.headers
+		let userAgent = request.headers["User-Agent"]
+		var response = try next.respond(to: request)
+
+		let responseTime = Date().timeIntervalSince(requestInTime)
+		let status = response.status.statusCode
+		let httpVersion = "HTTP/\(response.version.major).\(response.version.minor)"
+
+		let content: String = {
+			switch format {
+				case "combined":
+					return "\(remoteAddr)\tremote-user\t[date-clf]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\tresponse-content-length\t\"referrer\"\t\"\(userAgent)\""
+				case "common":
+					return "\(remoteAddr)\tremore-user\t[date-clf]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\response-content-length"
+				case "dev":
+					return "\(method)\t\(url)\t\(status)\t\(responseTime) ms\tresponse-content-length"
+				case "short":
+					return "\(remoteAddr)\tremote-user\t\(method)\t\(url)\t\(httpVersion)\t\(status)\tresponse-content-length\t\(responseTime) ms"
+				case "tiny":
+					return "\(method)\t\(url)\t\(status)\tresponse-content-length\t\(responseTime) ms"
+				default:
+					return "\(remoteAddr)\tremote-user\t[date-clf]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\response-content-length\t\"referrer\"\t\"(userAgent)\""
+			}
+		}()
+
 		saveToFile(toFile: file, content: content)
-		return try next.respond(to: request)
+		return response
 	}
 
 	func saveToFile(toFile: String, content: String) -> Bool {
