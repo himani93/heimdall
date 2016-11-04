@@ -18,6 +18,18 @@ let drop = Droplet(providers: [Heimdall.Provider.self])
 drop.run()
 ```
 
+or
+
+```
+import Vapor
+import HTTP
+import Heimdall
+
+let heimdall = Heimdall.Provider(format: "dev")
+let drop = Droplet(initializedProviders: [heimdall])
+
+drop.run()
+```
 Heimdall writes the logs to file in the following format. It generates a tab separated file which can easily be opened in spread sheet software.
 
 | REMOTE IP ADDRESS |	DATETIME |	REQUEST METHOD |	REQUEST URI |	REQUEST HEADERS |
