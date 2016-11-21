@@ -11,7 +11,7 @@ Log format can be chosen from [Supported Formats](https://github.com/himani93/he
 
 Requests can be logged in a custom file given the file path exists.
 
-## How to Use
+## :notebook: How to Use
 
 To use Heimdall with Vapor ```import Heimdall``` and append
 HeimdallProvider to list of avaiable providers.
@@ -29,12 +29,14 @@ drop.run()
 Uses `combined` as logging format and logs are saved to file `./logs.txt`.
 
 
-Heimdall Provider can be initialized in following ways
+:triangular_flag_on_post: **Heimdall Provider can be initialized in following ways**
 
 ```swift
   let dop = Droplet(providers: [Heimdall.Provider.self])
 ```
 Default `combined` format and default logging file `./logs.txt` are used.
+
+===
 
 ```swift
   let heimdall = Heimdall.Provider(format: "tiny")
@@ -43,12 +45,16 @@ Default `combined` format and default logging file `./logs.txt` are used.
 
 Uses `tiny` as logging format and logs are saved to default logging file `./logs.txt`.
 
+===
+
 ```swift
   let heimdall = Heimdall.Provider(file: "/Users/blob/Desktop/Logs/log.txt")
   let drop = Droplet(initializedProviders: [heimdall])
 ```
 
 Uses default logging format `combined` and logged are saved at `/Users/blob/Desktop/Logs/log.txt`
+
+===
 
 ```swift
   let heimdall = Heimdall.Provider(format: "tiny", file: "/Users/blob/Desktop/Logs/log.txt")
@@ -57,6 +63,7 @@ Uses default logging format `combined` and logged are saved at `/Users/blob/Desk
 
 Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file.
 
+===
 
 ## :ledger: Supported Formats
 
