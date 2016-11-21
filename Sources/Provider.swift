@@ -17,7 +17,11 @@ public final class Provider: Vapor.Provider {
     public init (format: String) {
         logger = Logger(format: format)
     }
-
+    
+    public init (file: String) {
+        logger = Logger(file: file)
+    }
+    
     public func afterInit(_ drop: Droplet) {
     }
 

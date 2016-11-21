@@ -10,15 +10,24 @@ public class Logger: Middleware {
         case invalidFile(path: String)
     }
     
-	var file = "logs.txt"
+    var file: String
 	var format: String
 
-	public init(format: String) {
+    public init(format: String, file: String) {
 		self.format = format
+        self.file = file
 	}
-
-	public convenience init() {
-		self.init(format: "combined")
+    
+    public convenience init() {
+        self.init(format: "combined", file: "logs.txt")
+    }
+    
+    public convenience init(file: String) {
+        self.init(format: "combined", file: file)
+    }
+    
+    public convenience init(format: String) {
+        self.init(format: format, file: "logs.txt")
 	}
 
 	deinit {
