@@ -122,4 +122,4 @@ Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file
 
 [Himani Agrawal](https://github.com/himani93)
 
-[Ankit Goel](https://github.com/ankitank)
+[Ankit Goel](https://github.com/ankit1ank)
