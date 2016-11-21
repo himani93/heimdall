@@ -1,4 +1,4 @@
-.build
 Packages
+.build
 .DS_Store
-.xcodeproj
+*.xcodeproj
