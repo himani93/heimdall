@@ -2,9 +2,16 @@ Heimdall
 ---
 A logger for [Vapor: Web framework for swift](http://github.com/vapor/vapor)
 
-Heimdall writes the logs to file in the following format. It generates a tab separated file which can easily be opened in spread sheet software.
 
-Logs all request to ```logs.txt``` file created in the project root
+## :books: Documentation
+
+Heimdall writes the logs to a tab separated file which can easily be opened in spread sheet software. By default, it logs all requests in ```combined``` format to ```./logs.txt``` file created in the project root. 
+
+Log format can be chosen from [Supported Formats](https://github.com/himani93/heimdall/blob/master/README.md#-supported)
+
+Requests can be logged in a custom file given the file path exists.
+
+## How to Use
 
 To use Heimdall with Vapor ```import Heimdall``` and append
 HeimdallProvider to list of avaiable providers.
@@ -19,18 +26,36 @@ let drop = Droplet(providers: [Heimdall.Provider.self])
 drop.run()
 ```
 
-or
+Uses `combined` as logging format and logs are saved to file `./logs.txt`.
+
+
+Heimdall Provider can be initialized in following ways
 
 ```swift
-import Vapor
-import HTTP
-import Heimdall
-
-let heimdall = Heimdall.Provider(format: "dev")
-let drop = Droplet(initializedProviders: [heimdall])
-
-drop.run()
+  let dop = Droplet(providers: [Heimdall.Provider.self])
 ```
+Default `combined` format and default logging file `./logs.txt` are used.
+
+```swift
+  let heimdall = Heimdall.Provider(format: "tiny")
+  let drop = Droplet(initializedProviders: [heimdall])
+```
+
+Uses `tiny` as logging format and logs are saved to default logging file `./logs.txt`.
+
+```swift
+  let heimdall = Heimdall.Provider(file: "/Users/blob/Desktop/Logs/log.txt")
+  let drop = Droplet(initializedProviders: [heimdall])
+```
+
+Uses default logging format `combined` and logged are saved at `/Users/blob/Desktop/Logs/log.txt`
+
+```swift
+  let heimdall = Heimdall.Provider(format: "tiny", file: "/Users/blob/Desktop/Logs/log.txt")
+  let drop = Droplet(initializedProviders: [heimdall])
+```
+
+Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file.
 
 ## :ledger: Supported Formats
 
@@ -71,13 +96,15 @@ drop.run()
 |method|url|status|res[content-length]|-|response time ms|
 
 
+## 🏫 Example Project
+
+  Link to ankit goel project
+
 ## 🔧 Compatibility
 
   This has been successfully tested on macOS and Ubuntu
 
-## 🏫 Example Project
-  Link to ankit goel project
-
 ## :pencil: License
 
   [MIT](http://github.com/himani93/heimdall/blob/master/LICENSE.txt)
+  
