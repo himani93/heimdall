@@ -2,9 +2,15 @@ import Foundation
 import HTTP
 
 public class Logger: Middleware {
+    
+    enum fileError: Error {
+        case notWritable
+        case notCreated(atPath: String)
+        case contentUnavailable
+        case invalidFile(path: String)
+    }
+    
 	var file = "logs.txt"
-	let fileManager =  FileManager()
-	var fileHandle: FileHandle? = nil
 	var format: String
 
 	public init(format: String) {
@@ -16,10 +22,7 @@ public class Logger: Middleware {
 	}
 
 	deinit {
-		// close file handle if set
-		if let fileHandle = fileHandle {
-			fileHandle.closeFile()
-		}
+    
 	}
 
 	public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
@@ -49,7 +52,7 @@ public class Logger: Middleware {
 			userAgent = (request.headers["User-Agent"])!
 		}
 
-		let content: String = {
+		var content: String = {
 			switch format {
 				case "combined":
 					return "\(remoteAddr)\t-\t\(remoteUser)\t[\(convertDateToCLF(date: requestInTime))]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)\t\"\(referer)\"\t\"\(userAgent)\""
@@ -65,8 +68,13 @@ public class Logger: Middleware {
 					return "\(remoteAddr)\t\(remoteUser)\t[\(convertDateToCLF(date: requestInTime))]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\\(responseContentLength)\t\"\(referer)\"\t\"(userAgent)\""
 			}
 		}()
-
-		saveToFile(toFile: file, content: content)
+        content = content + "\n"
+        
+        do {
+            try saveToFile(path: file, content: convertStringToData(content: content))
+        } catch {
+            print("Heimdall could not write to file")
+        }
 		return response
 	}
 
@@ -75,28 +83,43 @@ public class Logger: Middleware {
 		dateFormatter.dateFormat = "d/MMM/y:H:m:s Z"
 		return dateFormatter.string(from: date)
 	}
-
-	func saveToFile(toFile: String, content: String) -> Bool {
-		do {
-			if fileManager.fileExists(atPath: toFile) == false {
-				// create new file
-				try (content + "\n").write(toFile: toFile, atomically: true, encoding: .utf8)
-			} else {
-				// append to file
-				if fileHandle == nil {
-					fileHandle = try FileHandle(forWritingAtPath: toFile)
-				}
-				if let fileHandle = fileHandle {
-					let _ = fileHandle.seekToEndOfFile()
-					if let data = (content + "\n").data(using: String.Encoding.utf8) {
-						fileHandle.write(data)
-					}
-				}
-			}
-			return true
-		} catch {
-			print("Heimdall cannot write to file.")
-			return false
-		}
-	}
+    
+    func convertStringToData(content: String) -> Data? {
+        return content.data(using: String.Encoding.utf8)
+    }
+    
+    func saveToFile(path: String, content: Data?) throws -> Bool {
+        // display overwrite message if file overwritten
+        // close file defer keyword
+        // check if format different and display overwrite message also Encoding
+        // check file created by our server
+        // check morgan fileehandling
+        
+        guard let data = content else {
+            throw fileError.contentUnavailable
+        }
+        
+        let toFile = NSString(string: path).expandingTildeInPath
+        let fileManager = FileManager()
+        
+        if fileManager.fileExists(atPath: toFile) == false {
+            guard fileManager.createFile(atPath: toFile, contents: data) == true else {
+                throw fileError.notCreated(atPath: toFile)
+            }
+            return true
+        } else {
+            // check user permissions
+            guard fileManager.isWritableFile(atPath: toFile) == true else {
+                throw fileError.notWritable
+            }
+            // append to file
+            guard let fileHandle = FileHandle(forWritingAtPath: toFile) else {
+                throw fileError.invalidFile(path: toFile)
+            }
+            
+            fileHandle.seekToEndOfFile()
+            fileHandle.write(data)
+            return true
+        }
+    }
 }
