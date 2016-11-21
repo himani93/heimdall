@@ -57,6 +57,7 @@ Uses default logging format `combined` and logged are saved at `/Users/blob/Desk
 
 Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file.
 
+
 ## :ledger: Supported Formats
 
   :small_blue_diamond: combined
@@ -77,15 +78,15 @@ Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file
 
   :small_blue_diamond: dev
   
-| | | | | |
-|---|---|---|---|---|
-|method|url|status|response time ms|res[content-length]|
+| | | | | | |
+|---|---|---|---|---|---|
+|method|url|status|response time ms|-|res[content-length]|
 
 
   :small_blue_diamond: short
   
-| | | | | | | | |
-|---|---|---|---|---|---|---|---|
+| | | | | | | | | |
+|---|---|---|---|---|---|---|---|---|
 |remote address|remote user|method|url|HTTP/http-version|status|res[content-length]|-|response time ms|
 
 
@@ -108,3 +109,10 @@ Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file
 
   [MIT](http://github.com/himani93/heimdall/blob/master/LICENSE.txt)
   
+## :busts_in_silhouette: Contributors
+
+[Santosh Rajan](https://github.com/santoshrajan)
+
+[Himani Agrawal](https://github.com/himani93)
+
+[Ankit Goel](https://github.com/ankitank)
