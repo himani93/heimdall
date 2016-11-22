@@ -1,10 +1,13 @@
 import Foundation
 import HTTP
 
-// TODO: compare with morgan
-// TODO: example project
-// TODO: check ubuntu
-
+public enum logType {
+    case combined
+    case common
+    case dev
+    case short
+    case tiny
+}
 
 public class Logger: Middleware {
     
@@ -16,27 +19,11 @@ public class Logger: Middleware {
     }
     
     var file: String
-    var format: String
+    var format: logType
     
-    public init(format: String, file: String) {
+    public init(format: logType = .combined, file: String = "logs.txt") {
         self.format = format
         self.file = file
-    }
-    
-    public convenience init() {
-        self.init(format: "combined", file: "logs.txt")
-    }
-    
-    public convenience init(file: String) {
-        self.init(format: "combined", file: file)
-    }
-    
-    public convenience init(format: String) {
-        self.init(format: format, file: "logs.txt")
-    }
-    
-    deinit {
-        
     }
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
@@ -68,25 +55,24 @@ public class Logger: Middleware {
         
         var content: String = {
             switch format {
-            case "combined":
+            case .combined:
                 return "\(remoteAddr)\t-\t\(remoteUser)\t[\(convertDateToCLF(date: requestInTime))]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)\t\"\(referer)\"\t\"\(userAgent)\""
-            case "common":
+            case .common:
                 return "\(remoteAddr)\t-\t\(remoteUser)\t[\(convertDateToCLF(date: requestInTime))]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\\(responseContentLength)"
-            case "dev":
+            case .dev:
                 return "\(method)\t\(url)\t\(status)\t\(responseTime) ms\t\(responseContentLength)"
-            case "short":
+            case .short:
                 return "\(remoteAddr)\t\(remoteUser)\t\(method)\t\(url)\t\(httpVersion)\t\(status)\t\(responseContentLength)\t\(responseTime) ms"
-            case "tiny":
+            case .tiny:
                 return "\(method)\t\(url)\t\(status)\t\(responseContentLength)\t\(responseTime) ms"
-            default:
-                return "\(remoteAddr)\t\(remoteUser)\t[\(convertDateToCLF(date: requestInTime))]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\\(responseContentLength)\t\"\(referer)\"\t\"(userAgent)\""
             }
         }()
         content = content + "\n"
         
         do {
             try saveToFile(path: file, content: convertStringToData(content: content))
-        } catch {
+        } catch let error as Error {
+            print(error.localizedDescription)
             print("Heimdall could not write to file")
         }
         return response
@@ -103,11 +89,6 @@ public class Logger: Middleware {
     }
     
     func saveToFile(path: String, content: Data?) throws -> Bool {
-        // display overwrite message if file overwritten
-        // close file defer keyword
-        // check if format different and display overwrite message also Encoding
-        // check file created by our server
-        // check morgan fileehandling
         
         guard let data = content else {
             throw fileError.contentUnavailable
@@ -133,6 +114,7 @@ public class Logger: Middleware {
             
             fileHandle.seekToEndOfFile()
             fileHandle.write(data)
+            fileHandle.closeFile()
             return true
         }
     }
