@@ -1,7 +1,7 @@
 import Foundation
 import HTTP
 
-public enum logType {
+public enum LogType {
     case combined
     case common
     case dev
@@ -9,19 +9,19 @@ public enum logType {
     case tiny
 }
 
+enum FileError: Error {
+    case notWritable
+    case notCreated
+    case contentUnavailable
+    case invalidFile
+}
+
 public class Logger: Middleware {
     
-    enum fileError: Error {
-        case notWritable
-        case notCreated(atPath: String)
-        case contentUnavailable
-        case invalidFile(path: String)
-    }
-    
     var file: String
-    var format: logType
+    var format: LogType
     
-    public init(format: logType = .combined, file: String = "logs.txt") {
+    public init(format: LogType = .combined, file: String = "logs.txt") {
         self.format = format
         self.file = file
     }
@@ -71,9 +71,17 @@ public class Logger: Middleware {
         
         do {
             try saveToFile(path: file, content: convertStringToData(content: content))
-        } catch let error as Error {
-            print(error.localizedDescription)
-            print("Heimdall could not write to file")
+        } catch let error as FileError {
+            switch error {
+            case .notWritable:
+                print("Heimdall failed to write to file. Make sure you write permission.")
+            case .invalidFile:
+                print("Invalid file")
+            case .contentUnavailable:
+                print("Content unavailable")
+            case .notCreated:
+                print("Not created")
+            }
         }
         return response
     }
@@ -91,7 +99,7 @@ public class Logger: Middleware {
     func saveToFile(path: String, content: Data?) throws -> Bool {
         
         guard let data = content else {
-            throw fileError.contentUnavailable
+            throw FileError.contentUnavailable
         }
         
         let toFile = NSString(string: path).expandingTildeInPath
@@ -99,17 +107,17 @@ public class Logger: Middleware {
         
         if fileManager.fileExists(atPath: toFile) == false {
             guard fileManager.createFile(atPath: toFile, contents: data) == true else {
-                throw fileError.notCreated(atPath: toFile)
+                throw FileError.notCreated
             }
             return true
         } else {
             // check user permissions
             guard fileManager.isWritableFile(atPath: toFile) == true else {
-                throw fileError.notWritable
+                throw FileError.notWritable
             }
             // append to file
             guard let fileHandle = FileHandle(forWritingAtPath: toFile) else {
-                throw fileError.invalidFile(path: toFile)
+                throw FileError.invalidFile
             }
             
             fileHandle.seekToEndOfFile()

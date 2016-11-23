@@ -14,7 +14,7 @@ public final class Provider: Vapor.Provider {
         logger = Logger()
     }
     
-    public init(format: logType) {
+    public init(format: LogType) {
         logger = Logger(format: format)
     }
     
@@ -22,7 +22,7 @@ public final class Provider: Vapor.Provider {
         logger = Logger(file: file)
     }
     
-    public init(format: logType, file: String) {
+    public init(format: LogType, file: String) {
         logger = Logger(format: format, file: file)
     }
     
