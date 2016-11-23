@@ -70,17 +70,17 @@ public class Logger: Middleware {
         content = content + "\n"
         
         do {
-            try saveToFile(path: file, content: convertStringToData(content: content))
+            try saveToFile(path: file, content: content.data(using: String.Encoding.utf8))
         } catch let error as FileError {
             switch error {
             case .notWritable:
-                print("Heimdall failed to write to file. Make sure you write permission.")
+                print("Heimdall failed to write to file. Make sure you have write permission.")
             case .invalidFile:
-                print("Invalid file")
+                print("Heimdall was unable to read the file.")
             case .contentUnavailable:
-                print("Content unavailable")
+                print("Heimdall failed to write the data.")
             case .notCreated:
-                print("Not created")
+                print("Heimdall failed to create the log file. Please check the path is valid and you have right permissiosns.")
             }
         }
         return response
@@ -92,11 +92,7 @@ public class Logger: Middleware {
         return dateFormatter.string(from: date)
     }
     
-    func convertStringToData(content: String) -> Data? {
-        return content.data(using: String.Encoding.utf8)
-    }
-    
-    func saveToFile(path: String, content: Data?) throws -> Bool {
+    func saveToFile(path: String, content: Data?) throws {
         
         guard let data = content else {
             throw FileError.contentUnavailable
@@ -109,7 +105,6 @@ public class Logger: Middleware {
             guard fileManager.createFile(atPath: toFile, contents: data) == true else {
                 throw FileError.notCreated
             }
-            return true
         } else {
             // check user permissions
             guard fileManager.isWritableFile(atPath: toFile) == true else {
@@ -123,7 +118,6 @@ public class Logger: Middleware {
             fileHandle.seekToEndOfFile()
             fileHandle.write(data)
             fileHandle.closeFile()
-            return true
         }
     }
 }
