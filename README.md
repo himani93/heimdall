@@ -39,7 +39,7 @@ Default `combined` format and default logging file `./logs.txt` are used.
 ===
 
 ```swift
-  let heimdall = Heimdall.Provider(format: "tiny")
+  let heimdall = Heimdall.Provider(format: .tiny)
   let drop = Droplet(initializedProviders: [heimdall])
 ```
 
@@ -57,7 +57,7 @@ Uses default logging format `combined` and logged are saved at `/Users/blob/Desk
 ===
 
 ```swift
-  let heimdall = Heimdall.Provider(format: "tiny", file: "/Users/blob/Desktop/Logs/log.txt")
+  let heimdall = Heimdall.Provider(format: .tiny, file: "/Users/blob/Desktop/Logs/log.txt")
   let drop = Droplet(initializedProviders: [heimdall])
 ```
 
@@ -102,11 +102,6 @@ Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file
 | | | | | | |
 |---|---|---|---|---|---|
 |method|url|status|res[content-length]|-|response time ms|
-
-
-## 🏫 Example Project
-
-  Link to ankit goel project
 
 ## 🔧 Compatibility
 
