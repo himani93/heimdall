@@ -1,7 +1,6 @@
 Heimdall
 ---
-A logger for [Vapor: Web framework for swift](http://github.com/vapor/vapor)
-
+An easy to use HTTP request logger for [Vapor: Web framework for swift](http://github.com/vapor/vapor)
 
 ## :books: Documentation
 
