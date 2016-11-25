@@ -5,7 +5,7 @@ A logger for [Vapor: Web framework for swift](http://github.com/vapor/vapor)
 
 ## :books: Documentation
 
-Heimdall writes the logs to a tab separated file which can easily be opened in spread sheet software. By default, it logs all requests in ```combined``` format to ```./logs.txt``` file created in the project root. 
+Heimdall writes the logs to a tab separated file which can easily be opened in spread sheet software. By default, it logs all requests in ```combined``` format to ```./logs.txt``` file created in the project root.
 
 Log format can be chosen from [Supported Formats](https://github.com/himani93/heimdall/blob/master/README.md#ledger-supported-formats)
 
@@ -68,15 +68,15 @@ Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file
 ## :ledger: Supported Formats
 
   :small_blue_diamond: combined
-  
+
   Standard Apache combined log output
 
 | | | | | | | | | |
 |---|---|---|---|---|---|---|---|---|
 |remote address|-|remote user|date(clf format)|"method url HTTP/http-version"|status|res[content-length]|"referrer"|"user-agent"|
-      
+
   :small_blue_diamond: common
-  
+
   Standard Apache common log output
 
 | | | | | | | |
@@ -84,21 +84,21 @@ Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file
 |remote address|-|remote user|date(clf format)|"method url HTTP/http-version"|status|res[content-length]|
 
   :small_blue_diamond: dev
-  
+
 | | | | | | |
 |---|---|---|---|---|---|
 |method|url|status|response time ms|-|res[content-length]|
 
 
   :small_blue_diamond: short
-  
+
 | | | | | | | | | |
 |---|---|---|---|---|---|---|---|---|
 |remote address|remote user|method|url|HTTP/http-version|status|res[content-length]|-|response time ms|
 
 
   :small_blue_diamond: tiny
-  
+
 | | | | | | |
 |---|---|---|---|---|---|
 |method|url|status|res[content-length]|-|response time ms|
@@ -110,11 +110,13 @@ Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file
 ## :pencil: License
 
   [MIT](http://github.com/himani93/heimdall/blob/master/LICENSE.txt)
-  
+
+### :bust_in_silhouette: Mentor
+
+  This project was suggested by and completed under the mentorship of [Santosh Rajan](https://github.com/santoshrajan)
+
 ## :busts_in_silhouette: Contributors
 
-[Santosh Rajan](https://github.com/santoshrajan)
+  [Himani Agrawal](https://github.com/himani93)
 
-[Himani Agrawal](https://github.com/himani93)
-
-[Ankit Goel](https://github.com/ankit1ank)
+  [Ankit Goel](https://github.com/ankit1ank)
