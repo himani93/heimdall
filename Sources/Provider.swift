@@ -1,9 +1,12 @@
 import Vapor
 
 public final class Provider: Vapor.Provider {
+    
     public let logger: Logger
+    
     enum ConfigError: Error {
         case configNotFound
+        case invalidConfig
     }
     
     public func beforeRun(_: Vapor.Droplet) {
@@ -14,30 +17,19 @@ public final class Provider: Vapor.Provider {
             throw ConfigError.configNotFound
         }
 
-        guard
-            let file = heimdallConfig["file"]?.string,
-            let format = heimdallConfig["format"]?.string else {
-                self.logger = Logger()
-                return
+        // Both file and format specified
+        if let file = heimdallConfig["file"]?.string,
+        let format = heimdallConfig["format"]?.string {
+            self.logger = Logger(format: format, file: file)
+        } else if let file = heimdallConfig["file"]?.string {
+            //Only file specified
+            self.logger = Logger(file: file)
+        } else if let format = heimdallConfig["format"]?.string {
+            // Only format specified
+            self.logger = Logger(format: format)
+        } else {
+            throw ConfigError.invalidConfig
         }
-
-        let formatType: LogType = {
-            switch format {
-            case "common":
-                return .common
-            case "dev":
-                return .dev
-            case "short":
-                return .short
-            case "tiny":
-                return .tiny
-            default:
-                return .combined
-            }
-        }()
-
-        // TODO: call initializer based on existence of file and format
-        self.logger = Logger(format: formatType)
     }
     
     public init() {
