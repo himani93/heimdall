@@ -19,14 +19,16 @@ public final class Provider: Vapor.Provider {
 
         // Both file and format specified
         if let file = heimdallConfig["file"]?.string,
-        let format = heimdallConfig["format"]?.string {
-            self.logger = Logger(format: LogType(rawValue: format)!, file: file)
+        let formatString = heimdallConfig["format"]?.string,
+        let format =  LogType(rawValue: formatString) {
+            self.logger = Logger(format: format, file: file)
         } else if let file = heimdallConfig["file"]?.string {
             //Only file specified
             self.logger = Logger(file: file)
-        } else if let format = heimdallConfig["format"]?.string {
+        } else if let formatString = heimdallConfig["format"]?.string,
+            let format = LogType(rawValue: formatString) {
             // Only format specified
-            self.logger = Logger(format: LogType(rawValue: format)!)
+            self.logger = Logger(format: format)
         } else {
             throw ConfigError.invalidConfig
         }
