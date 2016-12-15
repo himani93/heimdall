@@ -64,6 +64,20 @@ Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file
 
 ===
 
+## Config
+
+```format``` and ```file``` location can be set in configuration file at ```Config/heimdall.json```. 
+
+Here's an example:
+
+```json
+{
+  "format": "tiny",
+  "file": "/Users/blob/Desktop/Logs/log.txt"
+}
+```
+You can also just set one of the parameter and other will be set to default. 
+
 ## 📒 Supported Formats
 
   :small_blue_diamond: combined
