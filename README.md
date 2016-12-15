@@ -20,9 +20,8 @@ import Vapor
 import HTTP
 import Heimdall
 
-let drop = Droplet(providers: [Heimdall.Provider.self])
-
-drop.run()
+let drop = Droplet()
+try drop.addProvider(Heimdall.Provider.self)
 ```
 
 Uses `combined` as logging format and logs are saved to file `./logs.txt`.
@@ -31,15 +30,16 @@ Uses `combined` as logging format and logs are saved to file `./logs.txt`.
 :triangular_flag_on_post: **Heimdall Provider can be initialized in following ways**
 
 ```swift
-  let drop = Droplet(providers: [Heimdall.Provider.self])
+let drop = Droplet()
+try drop.addProvider(Heimdall.Provider.self)
 ```
 Default `combined` format and default logging file `./logs.txt` are used.
 
 ===
 
 ```swift
-  let heimdall = Heimdall.Provider(format: .tiny)
-  let drop = Droplet(initializedProviders: [heimdall])
+let drop = Droplet()
+try drop.addProvider(Heimdall.Provider(format: .tiny))
 ```
 
 Uses `tiny` as logging format and logs are saved to default logging file `./logs.txt`.
@@ -47,8 +47,8 @@ Uses `tiny` as logging format and logs are saved to default logging file `./logs
 ===
 
 ```swift
-  let heimdall = Heimdall.Provider(file: "/Users/blob/Desktop/Logs/log.txt")
-  let drop = Droplet(initializedProviders: [heimdall])
+let drop = Droplet()
+try drop.addProvider(Heimdall.Provider(file: "/Users/blob/Desktop/Logs/log.txt"))
 ```
 
 Uses default logging format `combined` and logged are saved at `/Users/blob/Desktop/Logs/log.txt`
@@ -56,8 +56,8 @@ Uses default logging format `combined` and logged are saved at `/Users/blob/Desk
 ===
 
 ```swift
-  let heimdall = Heimdall.Provider(format: .tiny, file: "/Users/blob/Desktop/Logs/log.txt")
-  let drop = Droplet(initializedProviders: [heimdall])
+let drop = Droplet()
+try drop.addProvider(Heimdall.Provider(format: .tiny, file: "/Users/blob/Desktop/Logs/log.txt"))
 ```
 
 Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file.
@@ -71,9 +71,8 @@ import Vapor
 import HTTP
 import Heimdall
 
-let drop = Droplet(providers: [Heimdall.Provider.self])
-
-drop.run()
+let drop = Droplet()
+try drop.addProvider(Heimdall.Provider.self)
 ```
 
 ```format``` and ```file``` location can be set in configuration file at ```Config/heimdall.json```. 
