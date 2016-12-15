@@ -64,6 +64,30 @@ Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/log.txt` as log file
 
 ===
 
+:triangular_flag_on_post: **Heimdall Provider can also be initialized using a config file**
+
+```swift
+import Vapor
+import HTTP
+import Heimdall
+
+let drop = Droplet(providers: [Heimdall.Provider.self])
+
+drop.run()
+```
+
+```format``` and ```file``` location can be set in configuration file at ```Config/heimdall.json```. 
+
+Here's an example:
+
+```json
+{
+  "format": "tiny",
+  "file": "/Users/blob/Desktop/Logs/log.txt"
+}
+```
+If you specify only one parameter in config file other will be set to default. 
+
 ## 📒 Supported Formats
 
   :small_blue_diamond: combined

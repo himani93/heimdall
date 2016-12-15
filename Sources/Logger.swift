@@ -1,7 +1,7 @@
 import Foundation
 import HTTP
 
-public enum LogType {
+public enum LogType: String {
     case combined
     case common
     case dev
