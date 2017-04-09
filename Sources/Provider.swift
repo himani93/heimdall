@@ -55,5 +55,6 @@ public final class Provider: Vapor.Provider {
     
     public func boot(_ drop: Droplet) {
         drop.middleware.append(logger)
+        drop.middleware.append(AbortMiddleware())
     }
 }
