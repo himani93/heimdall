@@ -32,10 +32,7 @@ public class Logger: Middleware {
         let method = request.method
         let url = request.uri
         
-        // Use do or guard statement to check when this fails
-        // Log error status code when this fails
-        // Log url, request type(get, post), post headers
-        guard let response = try next.respond(to: request) else { print("ERROR"); return }
+        let response = try next.respond(to: request)
         
         let responseTime = Date().timeIntervalSince(requestInTime)
         let status = response.status.statusCode
