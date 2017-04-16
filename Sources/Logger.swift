@@ -2,6 +2,7 @@ import Foundation
 import HTTP
 
 public enum LogType: String {
+    case complete
     case combined
     case common
     case dev
@@ -18,12 +19,12 @@ enum FileError: Error {
 
 public class Logger: Middleware {
     
-    var file: String
+    var path: String
     var format: LogType
     
-    public init(format: LogType = .combined, file: String = "logs.txt") {
+    public init(format: LogType = .complete, path: String = "./") {
         self.format = format
-        self.file = file
+        self.path = path
     }
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
@@ -38,27 +39,23 @@ public class Logger: Middleware {
         let status = response.status.statusCode
         let httpVersion = "HTTP/\(response.version.major).\(response.version.minor)"
         
-        // TODO: set remoteUser if user authenticated
+        // TODO: Set remoteUser if user authenticated
         let remoteUser = "-"
-        // TODO: check how to get reponse[content-length]
-        let responseContentLength = "-"
         
-        var referer = "-"
-        if request.headers["referer"] != nil {
-            referer = (request.headers["referer"])!
-        }
+        let responseContentLength = response.body.bytes != nil ? String(describing: response.body.bytes!.count) : "-"
         
-        var userAgent = "-"
-        if request.headers["User-Agent"] != nil {
-            userAgent = (request.headers["User-Agent"])!
-        }
+        let referer = request.headers["referer"] ?? "-"
+        
+        let userAgent = request.headers["User-Agent"] ?? "-"
         
         var content: String = {
             switch format {
+            case .complete:
+                return "\(remoteAddr)\t\(remoteUser)\t[\(requestInTime.clfString())]\t\(responseTime) ms\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)\t\"\(referer)\"\t\"\(userAgent)\""
             case .combined:
-                return "\(remoteAddr)\t-\t\(remoteUser)\t[\(convertDateToCLF(date: requestInTime))]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)\t\"\(referer)\"\t\"\(userAgent)\""
+                return "\(remoteAddr)\t\(remoteUser)\t[\(requestInTime.clfString())]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)\t\"\(referer)\"\t\"\(userAgent)\""
             case .common:
-                return "\(remoteAddr)\t-\t\(remoteUser)\t[\(convertDateToCLF(date: requestInTime))]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\\(responseContentLength)"
+                return "\(remoteAddr)\t\(remoteUser)\t[\(requestInTime.clfString())]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)"
             case .dev:
                 return "\(method)\t\(url)\t\(status)\t\(responseTime) ms\t\(responseContentLength)"
             case .short:
@@ -70,7 +67,7 @@ public class Logger: Middleware {
         content = content + "\n"
         
         do {
-            try saveToFile(path: file, content: content.data(using: String.Encoding.utf8))
+            try saveToFile(path: path + "\(Date().logFormat()).txt", content: content.data(using: String.Encoding.utf8))
         } catch let error as FileError {
             switch error {
             case .notWritable:
@@ -86,12 +83,6 @@ public class Logger: Middleware {
         return response
     }
     
-    func convertDateToCLF(date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d/MMM/y:H:m:s Z"
-        return dateFormatter.string(from: date)
-    }
-    
     func saveToFile(path: String, content: Data?) throws {
         
         guard let data = content else {
@@ -101,16 +92,20 @@ public class Logger: Middleware {
         let toFile = NSString(string: path).expandingTildeInPath
         let fileManager = FileManager()
         
-        if fileManager.fileExists(atPath: toFile) == false {
-            guard fileManager.createFile(atPath: toFile, contents: data) == true else {
+        if self.path.characters.last != "/" {
+            self.path += "/"
+        }
+        
+        if !fileManager.fileExists(atPath: toFile) {
+            guard fileManager.createFile(atPath: toFile, contents: data) else {
                 throw FileError.notCreated
             }
         } else {
-            // check user permissions
-            guard fileManager.isWritableFile(atPath: toFile) == true else {
+            // Check user permissions
+            guard fileManager.isWritableFile(atPath: toFile) else {
                 throw FileError.notWritable
             }
-            // append to file
+            // Append to file
             guard let fileHandle = FileHandle(forWritingAtPath: toFile) else {
                 throw FileError.invalidFile
             }
@@ -119,5 +114,19 @@ public class Logger: Middleware {
             fileHandle.write(data)
             fileHandle.closeFile()
         }
+    }
+}
+
+public extension Date {
+    func clfString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d/MMM/y:H:m:s Z"
+        return dateFormatter.string(from: self)
+    }
+    
+    func logFormat() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: self)
     }
 }
