@@ -64,7 +64,7 @@ public class Logger: Middleware {
                 return "\(method)\t\(url)\t\(status)\t\(responseContentLength)\t\(responseTime) ms"
             }
         }()
-        content = content + "\n"
+        content += "\n"
         
         do {
             try saveToFile(path: path + "\(Date().logFormat()).txt", content: content.data(using: String.Encoding.utf8))
