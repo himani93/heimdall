@@ -51,9 +51,9 @@ public class Logger: Middleware {
         var content: String = {
             switch format {
             case .complete:
-                return "\(remoteAddr)\t\(remoteUser)\t[\(requestInTime.clfString())]\t\(responseTime) ms\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)\t\"\(referer)\"\t\"\(userAgent)\""
+                return "\(remoteAddr)\t-\t\(remoteUser)\t[\(requestInTime.clfString())]\t\(responseTime) ms\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)\t\"\(referer)\"\t\"\(userAgent)\""
             case .combined:
-                return "\(remoteAddr)\t\(remoteUser)\t[\(requestInTime.clfString())]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)\t\"\(referer)\"\t\"\(userAgent)\""
+                return "\(remoteAddr)\t-\t\(remoteUser)\t[\(requestInTime.clfString())]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)\t\"\(referer)\"\t\"\(userAgent)\""
             case .common:
                 return "\(remoteAddr)\t\(remoteUser)\t[\(requestInTime.clfString())]\t\"\(method)\t\(url)\t\(httpVersion)\"\t\(status)\t\(responseContentLength)"
             case .dev:
