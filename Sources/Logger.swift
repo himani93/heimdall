@@ -92,10 +92,6 @@ public class Logger: Middleware {
         let toFile = NSString(string: path).expandingTildeInPath
         let fileManager = FileManager()
         
-        if self.path.characters.last != "/" {
-            self.path += "/"
-        }
-        
         if !fileManager.fileExists(atPath: toFile) {
             guard fileManager.createFile(atPath: toFile, contents: data) else {
                 throw FileError.notCreated
