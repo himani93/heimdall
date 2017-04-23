@@ -93,7 +93,7 @@ If you specify only one parameter in config file other will be set to default.
 
   Complete log output
 
-| | | | | | | | | |
+| | | | | | | | | | |
 |---|---|---|---|---|---|---|---|---|---|
 |remote address|-|remote user|date(clf format)|response time ms|"method url HTTP/http-version"|status|res[content-length]|"referrer"|"user-agent"|
 
