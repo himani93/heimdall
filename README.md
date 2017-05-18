@@ -17,7 +17,7 @@ Add the following line to your Package.swift file:
 .Package(url: "https://github.com/himani93/heimdall.git", Version(0, 1, 0))
 ```
 
-To use Heimdall with Vapor ```import Heimdall``` and append
+```import Heimdall``` and append
 HeimdallProvider to list of avaiable providers.
 
 ```swift
@@ -29,18 +29,10 @@ let drop = Droplet()
 try drop.addProvider(Heimdall.Provider.self)
 ```
 
-Uses `combined` as logging format and logs are saved to path `./`.
-
+This default initialization uses `combined` as logging format and logs are saved to path `./`.
+To use a different logging format read below.
 
 :triangular_flag_on_post: **Heimdall Provider can be initialized in following ways**
-
-```swift
-let drop = Droplet()
-try drop.addProvider(Heimdall.Provider.self)
-```
-Default `combined` format and default logging path `./` are used.
-
----
 
 ```swift
 let drop = Droplet()
