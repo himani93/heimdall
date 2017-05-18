@@ -12,6 +12,11 @@ Requests can be logged in a custom file given the file path exists.
 
 ## 📓 How to Use
 
+Add the following line to your Package.swift file:
+```swift
+.Package(url: "https://github.com/himani93/heimdall.git", Version(0, 1, 0))
+```
+
 To use Heimdall with Vapor ```import Heimdall``` and append
 HeimdallProvider to list of avaiable providers.
 
