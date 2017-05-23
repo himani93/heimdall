@@ -29,7 +29,7 @@ public class Logger: Middleware {
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
         let requestInTime: Date = Date()
-        let remoteAddr = request.peerAddress!.address()
+        let remoteAddr = request.peerHostname! //peerAddress!.address()
         let method = request.method
         let url = request.uri
         
