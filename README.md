@@ -4,7 +4,7 @@ An easy to use HTTP request logger for [Vapor: Web framework for swift](http://g
 
 ## 📚 Documentation
 
-Heimdall writes the logs to a tab separated file which can easily be opened in spread sheet software. By default, it logs all requests in ```combined``` format to ```./``` path created in the project root. The log file is named as YYYY-MM-DD.txt
+Heimdall writes the logs to a tab separated file which can easily be opened in spread sheet software. By default, it logs all requests in ```combined``` format to ```~/``` path created in the project root. The log file is named as Heimdall_YYYY-MM-DD.txt
 
 Log format can be chosen from [Supported Formats](https://github.com/himani93/heimdall/blob/master/README.md#-supported-formats)
 
@@ -14,7 +14,7 @@ Requests can be logged in a custom file given the file path exists.
 
 Add the following line to your Package.swift file:
 ```swift
-.Package(url: "https://github.com/himani93/heimdall.git", Version(0, 1, 0))
+.Package(url: "https://github.com/himani93/heimdall.git", majorVersion: 1)
 ```
 
 ```import Heimdall``` and append
@@ -29,7 +29,7 @@ let drop = Droplet()
 try drop.addProvider(Heimdall.Provider.self)
 ```
 
-This default initialization uses `combined` as logging format and logs are saved to path `~/HeimdallLogs/`.
+This default initialization uses `combined` as logging format and logs are saved to path `~/` i.e. the user's home directory.
 To use a different logging format read below.
 
 ### Don't forget to add middleware in Config/droplet.json.
@@ -61,7 +61,7 @@ let drop = Droplet()
 drop.addProvider(Heimdall.Provider(format: .tiny))
 ```
 
-Uses `tiny` as logging format and logs are saved to default logging path `./`.
+Uses `tiny` as logging format and logs are saved to default logging path `~/`(User's home directory).
 
 ---
 
@@ -70,7 +70,7 @@ let drop = Droplet()
 drop.addProvider(Heimdall.Provider(path: "/Users/blob/Desktop/Logs/"))
 ```
 
-Uses default logging format `combined` and logged are saved at `/Users/blob/Desktop/Logs/` path.
+Uses default logging format `combined` and logged are saved at `/Users/blob/Desktop/Logs/` path. Please make sure that the path provided for the file exists.
 
 ---
 
@@ -79,7 +79,7 @@ let drop = Droplet()
 drop.addProvider(Heimdall.Provider(format: .tiny, path: "/Users/blob/Desktop/Logs/"))
 ```
 
-Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/` as log path.
+Uses `tiny` as logging format and `/Users/blob/Desktop/Logs/` as log path. Please make sure that the path provided for the file exists.
 
 ---
 
