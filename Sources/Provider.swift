@@ -51,11 +51,9 @@ public final class Provider: Vapor.Provider {
         logger = Logger(format: format, path: path)
     }
     
-    public func boot(_ drop: Droplet) {
-//        drop.middleware.insert(logger, at: 0)
-    }
+    public func boot(_ drop: Droplet) { }
     
     public func boot(_ config: Config) throws {
-        config.addConfigurable(middleware: logger, name: "logger")
+        config.addConfigurable(middleware: logger, name: "heimdall")
     }
 }
