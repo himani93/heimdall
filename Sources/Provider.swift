@@ -15,7 +15,8 @@ public final class Provider: Vapor.Provider {
     
     public init(config: Config) throws {
         guard let heimdallConfig = config["heimdall"]?.object else {
-            throw ConfigError.configNotFound
+            logger = Logger()
+            return
         }
         
         // Both file and format specified

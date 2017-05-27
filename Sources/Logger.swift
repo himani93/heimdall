@@ -22,7 +22,7 @@ public class Logger: Middleware {
     var path: String
     var format: LogType
     
-    public init(format: LogType = .complete, path: String = "~/HeimdallLogs/") {
+    public init(format: LogType = .complete, path: String = "~/") {
         self.format = format
         self.path = path
     }
@@ -67,7 +67,7 @@ public class Logger: Middleware {
         content += "\n"
         
         do {
-            try saveToFile(path: path + "\(Date().logFormat()).txt", content: content.data(using: String.Encoding.utf8))
+            try saveToFile(path: path + "Heimdall_\(Date().logFormat()).txt", content: content.data(using: String.Encoding.utf8))
         } catch let error as FileError {
             switch error {
             case .notWritable:
@@ -84,7 +84,6 @@ public class Logger: Middleware {
     }
     
     func saveToFile(path: String, content: Data?) throws {
-        
         guard let data = content else {
             throw FileError.contentUnavailable
         }
