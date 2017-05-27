@@ -29,8 +29,30 @@ let drop = Droplet()
 try drop.addProvider(Heimdall.Provider.self)
 ```
 
-This default initialization uses `combined` as logging format and logs are saved to path `./`.
+This default initialization uses `combined` as logging format and logs are saved to path `~/HeimdallLogs/`.
 To use a different logging format read below.
+
+### Don't forget to add middleware in Config/droplet.json.
+In the Config/droplet.json file, add "heimdall" to the appropriate middleware array.
+
+```
+{
+    ...
+    "middleware": {
+        "server": [
+            ...
+            "heimdall",
+            ...
+        ],
+        "client": [
+            ...
+            "heimdall",
+            ...
+        ]
+    },
+    ...
+}
+```
 
 :triangular_flag_on_post: **Heimdall Provider can be initialized in following ways**
 

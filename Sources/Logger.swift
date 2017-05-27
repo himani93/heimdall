@@ -22,14 +22,14 @@ public class Logger: Middleware {
     var path: String
     var format: LogType
     
-    public init(format: LogType = .complete, path: String = "./") {
+    public init(format: LogType = .complete, path: String = "~/HeimdallLogs/") {
         self.format = format
         self.path = path
     }
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
         let requestInTime: Date = Date()
-        let remoteAddr = request.peerHostname! //peerAddress!.address()
+        let remoteAddr = request.peerHostname!
         let method = request.method
         let url = request.uri
         
