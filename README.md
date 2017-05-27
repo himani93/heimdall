@@ -4,7 +4,7 @@ An easy to use HTTP request logger for [Vapor: Web framework for swift](http://g
 
 ## 📚 Documentation
 
-Heimdall writes the logs to a tab separated file which can easily be opened in spread sheet software. By default, it logs all requests in ```combined``` format to ```~/``` path created in the project root. The log file is named as Heimdall_YYYY-MM-DD.txt
+Heimdall writes the logs to a tab separated file which can easily be opened in spread sheet software. By default, it logs all requests in ```combined``` format to ```~/``` path (user's home directory). The log file is named as Heimdall_YYYY-MM-DD.txt
 
 Log format can be chosen from [Supported Formats](https://github.com/himani93/heimdall/blob/master/README.md#-supported-formats)
 
