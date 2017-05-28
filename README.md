@@ -39,19 +39,19 @@ In the Config/droplet.json file, add "heimdall" to the appropriate middleware ar
     ...
     "middleware": {
         "server": [
-            ...
-            "heimdall",
+            "heimdall", // Add heimdall as the first middleware
             ...
         ],
         "client": [
-            ...
-            "heimdall",
+            "heimdall", // Add heimdall as the first middleware
             ...
         ]
     },
     ...
 }
 ```
+
+Note: Add heimdall as the first middleware so it correctly measures request response times.
 
 :triangular_flag_on_post: **Heimdall Provider can be initialized in following ways**
 
