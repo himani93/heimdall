@@ -38,13 +38,9 @@ In the Config/droplet.json file, add "heimdall" to the appropriate middleware ar
 {
     ...
     "middleware": {
-        "server": [
-            "heimdall", // Add heimdall as the first middleware
-            ...
-        ],
-        "client": [
-            "heimdall", // Add heimdall as the first middleware
-            ...
+        [
+        "heimdall", // Add heimdall as the first middleware
+        ...
         ]
     },
     ...
