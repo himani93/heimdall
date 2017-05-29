@@ -37,12 +37,10 @@ In the Config/droplet.json file, add "heimdall" to the appropriate middleware ar
 ```
 {
     ...
-    "middleware": {
-        [
-        "heimdall", // Add heimdall as the first middleware
-        ...
-        ]
-    },
+    "middleware": [
+            "heimdall", // Add heimdall as the first middleware
+            ...
+    ],
     ...
 }
 ```
