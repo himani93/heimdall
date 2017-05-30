@@ -1,6 +1,8 @@
 Heimdall
 ---
-An easy to use HTTP request logger for [Vapor: Web framework for swift](http://github.com/vapor/vapor)
+An easy to use HTTP request logger for [Vapor: Web framework for swift](http://github.com/vapor/vapor).
+
+Read a brief explanation about Heimdall's source code [here](https://medium.com/@ankitank/heimdall-writing-http-request-logger-for-vapor-6007d608b4fb).
 
 ## 📚 Documentation
 
