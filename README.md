@@ -1,6 +1,8 @@
 Heimdall
 ---
-An easy to use HTTP request logger for [Vapor: Web framework for swift](http://github.com/vapor/vapor)
+An easy to use HTTP request logger for [Vapor: Web framework for swift](http://github.com/vapor/vapor).
+
+Read a brief explanation about Heimdall's source code [here](https://medium.com/@ankitank/heimdall-writing-http-request-logger-for-vapor-6007d608b4fb).
 
 ## 📚 Documentation
 
@@ -37,21 +39,15 @@ In the Config/droplet.json file, add "heimdall" to the appropriate middleware ar
 ```
 {
     ...
-    "middleware": {
-        "server": [
+    "middleware": [
+            "heimdall", // Add heimdall as the first middleware
             ...
-            "heimdall",
-            ...
-        ],
-        "client": [
-            ...
-            "heimdall",
-            ...
-        ]
-    },
+    ],
     ...
 }
 ```
+
+Note: Add heimdall as the first middleware so it correctly measures request response times.
 
 :triangular_flag_on_post: **Heimdall Provider can be initialized in following ways**
 
